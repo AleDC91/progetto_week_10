@@ -1,0 +1,26 @@
+
+.nav-items-left{
+    align-items: center;
+}
+
+@media screen and (max-width: 992px) {
+    .saluto{
+        order: -100;
+       padding: 20px 0 10px 0 !important;
+    }
+    .nav-items-left{
+        align-items: start;
+    }
+
+}
+
+.user-info-avatar{
+    width: 200px;
+    height: 200px;
+}
+
+.user-book, .single-book{
+    box-shadow: 5px 5px 5px grey;
+    padding: 20px;
+    width: 250px;
+}
