@@ -1,3 +1,9 @@
+<?php 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -9,4 +15,6 @@
 </head>
   <body>
 <?php require_once("navbar.php")  ?>
+
+<main class="container main-container">
   

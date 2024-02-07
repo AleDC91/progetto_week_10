@@ -1,8 +1,8 @@
 <?php
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// error_reporting(E_ALL);
 ?>
 
 
@@ -24,8 +24,6 @@ if (!isset($_SESSION["msgShown"])) {
     $_SESSION["msgShown"] = true;
 }
 ?>
-
-<main class="container my-5">
 
     <h1 class="text-center">Add a Book to the Library</h1>
 
@@ -56,8 +54,6 @@ if (!isset($_SESSION["msgShown"])) {
 
 
 
-
-</main>
 
 
 <script>

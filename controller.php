@@ -15,6 +15,7 @@ session_start();
 unset($_SESSION["errorMsg"]);
 unset($_SESSION["successMsg"]);
 unset($_SESSION["msgShown"]);
+unset($_SESSION["book-to-edit"]); 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -152,14 +153,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header("Location: http://localhost/addBooks.php");
             exit();
         } elseif (!is_string($bookAuthor) || strlen($bookAuthor) < 0) {
-            $_SESSION["errorMsg"] = "Inserisci il titolo del libro!";
+            $_SESSION["errorMsg"] = "Inserisci l'autore del libro!";
             header("Location: http://localhost/addBooks.php");
             exit();
         } elseif (!is_int($bookYear) || $bookYear < 1800 || $bookYear > date('Y')) {
             $_SESSION["errorMsg"] = "Data non valida!!";
             header("Location: http://localhost/addBooks.php");
             exit();
-        } elseif (!is_int($bookGenre) || $book < 0 || $bookGenre > count($allGenres)) {
+        } elseif (!is_int($bookGenre) || $bookGenre < 1 || $bookGenre > count($allGenres)) {
             $_SESSION["errorMsg"] = "Genere inserito non valido!!" . $bookGenre;
             header("Location: http://localhost/addBooks.php");
             exit();
@@ -170,30 +171,87 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
-    if (isset($_POST["delete-book"])){
-        $bookID = filter_var(filter_var($_POST["book_id"], FILTER_SANITIZE_NUMBER_INT), FILTER_VALIDATE_INT);
+    if (isset($_POST["delete-book"])) {
+
+        $bookID = filter_var(filter_var($_POST["book-id"], FILTER_SANITIZE_NUMBER_INT), FILTER_VALIDATE_INT);
         $userID = $_SESSION["userID"];
-        $allUserBooks = getUserBooks($mysqli, $userId);
 
-        foreach ($allUserBooks as $userBook){
-            if (!$userBook["book_id"] == $bookID){
-                $_SESSION["errorMsg"] = "Non puoi eliminare libri aggiunti da altri";
-                header("Location: http://localhost/profile.php");
-                exit();
-            }
-        }
-
-        $sqlDeleteBook = "DELETE FROM books WHERE book_id = '$bookID'";
-        if(!$mysqli->query($sqlDeleteBook)){
-            $_SESSION["errorMsg"] = "Errore nella cancellazione del libro";
-            header("Location: http://localhost/profile.php");
-            exit();
-
-        } else {
-            $_SESSION["successMsg"] = "Libro rimosso dal database con successo";
-            header("Location: http://localhost/profile.php");
-            exit();
-        }
-        
+        deleteUserBook($mysqli, $bookID, $allUserBooks, $userID);
     }
+
+    if (isset($_POST["open-edit-book"])){
+        $_SESSION["edit-book-active"] = true;
+        $bookId = filter_var(filter_var($_POST["book-id"], FILTER_SANITIZE_NUMBER_INT), FILTER_VALIDATE_INT);
+        $_SESSION["bookId"] = $bookId;
+        $_SESSION["book-to-edit"] = getUserBook($mysqli, $_SESSION["userID"], $_SESSION["bookId"]);
+
+        header("Location: http://localhost/profile.php");
+        exit();
+
+    }
+
+    if (isset($_POST["edit-book"])){
+        
+        unset($_SESSION["edit-book-active"]);
+        // $userID = $_SESSION["userID"];
+        // $newTitle = htmlspecialchars(trim($_POST["book-title"]));
+        // $newAuthor = htmlspecialchars(trim($_POST["book-author"]));
+        // $newYear = filter_var(filter_var($_POST["year"], FILTER_SANITIZE_NUMBER_INT), FILTER_VALIDATE_INT);
+        // $newGenre =  filter_var(filter_var($_POST["genre"], FILTER_SANITIZE_NUMBER_INT), FILTER_VALIDATE_INT);
+        // $BOOKID = filter_var(filter_var($_POST["book-id"], FILTER_SANITIZE_NUMBER_INT), FILTER_VALIDATE_INT);
+
+        $_SESSION["book-to-edit"]["title"] = $_POST["book-title"];
+        $_SESSION["book-to-edit"]["author"] = $_POST["book-author"];
+        $_SESSION["book-to-edit"]["year"] = $_POST["year"];
+
+
+
+
+        $userID = $_SESSION["userID"];
+        $newTitle = $_POST["book-title"];
+        $newAuthor = $_POST["book-author"];
+        $newYear = (int)$_POST["year"];
+        $newGenre = (int)$_POST["genre"];
+        $BOOKID = (int)$_POST["book-id"];
+
+        editBook($mysqli, $newTitle, $newAuthor, $newYear, $newGenre,$BOOKID);
+
+        // if (!is_string($newTitle) || strlen($newTitle) < 0) {
+        //     $_SESSION["errorMsg"] = "Inserisci il titolo del libro!";
+        //     header("Location: http://localhost/profile.php");
+        //     exit();
+        // } elseif (!is_string($newAuthor) || strlen($newAuthor) < 0) {
+        //     $_SESSION["errorMsg"] = "Inserisci l'autore del libro!";
+        //     header("Location: http://localhost/profile.php");
+        //     exit();
+        // } elseif (!is_int($newYear) || $newYear < 1800 || $newYear > date('Y')) {
+        //     $_SESSION["errorMsg"] = "Data non valida!!";
+        //     header("Location: http://localhost/profile.php");
+        //     exit();
+        // } elseif (!is_int($newGenre) || $newGenre < 1 || $newGenre > count($allGenres)) {
+        //     $_SESSION["errorMsg"] = "Genere inserito non valido!!" . $bookGenre;
+        //     header("Location: http://localhost/profile.php");
+        //     exit();
+        // } else {
+        //     echo $userID . " " . $newTitle . " " . $newAuthor . " " . $newYear . " " . $newGenre  ;
+
+        
+        // }
+
+ 
+
+
+
+
+
+    }
+    if (isset($_POST["exit-edit"])){
+        unset($_SESSION["book-to-edit"]); 
+
+        unset($_SESSION["edit-book-active"]);
+        header("Location: http://localhost/profile.php");
+        exit();
+
+    }
+
 }

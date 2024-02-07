@@ -5,7 +5,7 @@ $isLogged = isset($_SESSION["isLogged"]) && $_SESSION["isLogged"];
 $currentPage = basename($_SERVER['PHP_SELF']);
 ?>
 
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+<nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
     <div class="container-fluid">
         <a class="navbar-brand" href="index.php">Libreria</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,7 +31,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                             <?php echo "Hi, " . $_SESSION["userName"] . "!" ?>
                         </p>
 
-                    <?php } ?>
+                    
                 </div>
                 <div class="d-lg-flex">
                     <li class="nav-item dropdown me-5">
@@ -53,6 +53,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                             </li>
                         </ul>
                     </li>
+                    <?php } ?>
                     <?php
 
                     if ($isLogged) { ?>

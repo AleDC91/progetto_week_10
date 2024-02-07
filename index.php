@@ -1,8 +1,8 @@
 <?php
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// error_reporting(E_ALL);
 
 $isLogged = false;
 
@@ -27,7 +27,6 @@ if (!isset($_SESSION["msgShown"])) {
 }
 ?>
 
-<main class="container">
 
     <h1 class="text-center my-5">All books</h1>
 
@@ -39,9 +38,9 @@ if (!isset($_SESSION["msgShown"])) {
                 <h3><?= $book["author"] ?></h3>
                 <p><?= $book["year"] ?></p>
                 <p><?= $book["genre"] ?></p>
-                <div>
-                    <p>Added by: </p>
-                    <img src=<?= isset($book["image_url"]) ?  $book["image_url"] : "/assets/images/avatar-1577909_960_720.webp" ?> width="35" height="35">
+                <div  class="d-flex align-items-center justify-content-center">
+                    <p class="m-0 p-0 pe-3">Added by: </p>
+                    <img class="rounded-circle" src=<?= isset($book["image_url"]) ?  $book["image_url"] : "/assets/images/avatar-1577909_960_720.webp" ?> width="35" height="35">
                 </div>
             </article>
         <?php } ?>
@@ -51,8 +50,6 @@ if (!isset($_SESSION["msgShown"])) {
 
 
 
-
-</main>
 
 
 
