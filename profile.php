@@ -112,50 +112,54 @@ if (!isset($_SESSION["msgShown"])) {
             </article>
         <?php } ?>
     </section>
-<?php if(isset($_SESSION["edit-book-active"])) {?>
-    <div class="edit-box"  >
-        <div class="inner-edit">
+    <?php if (isset($_SESSION["edit-book-active"])) { ?>
+        <div class="edit-box">
+            <div class="inner-edit">
 
-            <h2 class="text-center">Edit Book</h2>
+                <h2 class="text-center">Edit Book</h2>
 
-            <form action="controller.php" method="POST" class="mt-5">
-                <div class="mb-3">
-                    <label for="book-title" class="form-label">Book Title</label>
-                    <input type="text" name="book-title" class="form-control" id="book-title" value=<?= $_SESSION["book-to-edit"]["title"] ?>>
-                </div>
-                <div class="mb-3">
-                    <label for="book-author" class="form-label">Author</label>
-                    <input type="text" name="book-author" class="form-control" id="book-author" value=<?= $_SESSION["book-to-edit"]["author"] ?>>
-                </div>
-                <div class="mb-3">
-                    <label for="year" class="form-label">Year of publication</label>
-                    <input type="number" min="1800" max="<?php echo date('Y'); ?>" name="year" class="form-control" id="year" value=<?= $_SESSION["book-to-edit"]["year"] ?>>
-                </div>
-                <div class="mb-5">
-                    <label for="genre" class="form-label">Genre</label>
-                    <select name="genre" id="genre">
-                         <?php foreach ($allGenres as $genre_id => $genre) { ?> 
-                            <option value=<?= $genre_id ?>><?= $genre ?></option>
-                        <?php } ?>
-                    </select>
-                </div>
-                <input type="hidden" name="book-id" value=<?= $_SESSION["bookId"]  ?>>
-                <button type="submit" class="btn btn-warning mt-4" name="edit-book">Edit Book</button>
-                <button type="submit" class="btn btn-info mt-4" name="exit-edit">Back</button>
+                <form action="controller.php" method="POST" class="mt-5">
+                    <div class="mb-3">
+                        <label for="book-title" class="form-label">Book Title</label>
+                        <input type="text" name="book-title" class="form-control" id="book-title" value=<?= $_SESSION["book-to-edit"]["title"] ?>>
+                    </div>
+                    <div class="mb-3">
+                        <label for="book-author" class="form-label">Author</label>
+                        <input type="text" name="book-author" class="form-control" id="book-author" value=<?= $_SESSION["book-to-edit"]["author"] ?>>
+                    </div>
+                    <div class="mb-3">
+                        <label for="year" class="form-label">Year of publication</label>
+                        <input type="number" min="1800" max="<?php echo date('Y'); ?>" name="year" class="form-control" id="year" value=<?= $_SESSION["book-to-edit"]["year"] ?>>
+                    </div>
+                    <div class="mb-5">
+                        <label for="genre" class="form-label">Genre</label>
+                        <select name="genre" id="genre">
+                            <?php foreach ($allGenres as $genre_id => $genre) { ?>
+                                <?php if ($_SESSION["book-to-edit"]["genre_id"] == $genre_id) { ?>
+                                    <option value="<?= $genre_id?>" selected><?= $genre ?></option>
+                                <?php } else { ?>
+                                    <option value=<?= $genre_id ?>><?= $genre ?></option>
+                                <?php } ?>
+                            <?php } ?>
 
-            </form>
-            <?php print_r($_SESSION["book-to-edit"]);?>
-           <?php unset($_SESSION["book-to-edit"]); ?> 
-           <?php print_r ($_SESSION["bookId"]) ?>
-           
+                        </select>
+                    </div>
+                    <input type="hidden" name="book-id" value=<?= $_SESSION["bookId"]  ?>>
+                    <button type="submit" class="btn btn-warning mt-4" name="edit-book">Edit Book</button>
+                    <button type="submit" class="btn btn-info mt-4" name="exit-edit">Back</button>
 
-           
+                </form>
+                <?php print_r($_SESSION["book-to-edit"]); ?>
+                <?php print_r($_SESSION["bookId"]) ?>
+
+
+
+
+            </div>
 
         </div>
 
-    </div>
-
-<?php } ?>
+    <?php } ?>
 
 
 </main>
