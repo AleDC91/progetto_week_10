@@ -5,17 +5,17 @@ require_once('functions.php');
 require_once('mail.php');
 
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// error_reporting(E_ALL);
 
 session_start();
 
 
 unset($_SESSION["errorMsg"]);
 unset($_SESSION["successMsg"]);
-unset($_SESSION["msgShown"]);
 unset($_SESSION["book-to-edit"]);
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -260,10 +260,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $userId = $_SESSION["userID"];
         $bookId = filter_var(filter_var($_POST["book-fav-id"], FILTER_SANITIZE_NUMBER_INT), FILTER_VALIDATE_INT);
         removeFavourites($mysqli, $bookId, $userId);
+        unset($_SESSION["msgShown"]);
+
         header("Location: http://localhost/favourites.php");
         exit();
     }
 
+
+    if (isset($_POST["query"])) {
+        $_SESSION["query"] = htmlspecialchars($_POST["query"]);
+        echo  $_POST["query"];
+        header("Location: http://localhost/index.php");
+        exit();
+    }
 
 
 }

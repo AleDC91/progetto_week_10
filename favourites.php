@@ -1,8 +1,8 @@
 <?php
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// error_reporting(E_ALL);
 ?>
 
 <?php require_once('database.php'); ?>
@@ -32,7 +32,7 @@ $userBooks = getUserBooks($mysqli, $userID);
 
 $userFavourites = getUserFavourites($mysqli, $userID);
 $favouriteBooksIndexes = [];
-foreach ($userFavourites as $favouriteBook){
+foreach ($userFavourites as $favouriteBook) {
     $favouriteBooksIndexes[] = $favouriteBook["book_id"];
 }
 
@@ -43,18 +43,19 @@ foreach ($userFavourites as $favouriteBook){
 <?php require_once("partials/header.php") ?>
 
 <?php
-if (!isset($_SESSION["msgShown"])) {
-    if (isset($_SESSION["errorMsg"])) { ?>
-        <div class="alert alert-danger text-center mt-3 w-50 mx-auto" role="alert" id="msg-box">
-            <?= $_SESSION["errorMsg"] ?>
-        </div>
-    <?php } elseif (isset($_SESSION["successMsg"])) { ?>
-        <div class="alert alert-success text-center mt-3 w-50 mx-auto" role="alert" id="msg-box">
-            <?= $_SESSION["successMsg"] ?>
-        </div>
-<?php }
-    $_SESSION["msgShown"] = true;
+
+if (isset($_SESSION["errorMsg"])) { ?>
+    <div class="alert alert-danger text-center mt-3 w-50 mx-auto" role="alert" id="msg-box">
+        <?= $_SESSION["errorMsg"] ?>
+    </div>
+<?php unset($_SESSION["errorMsg"]);
+} elseif (isset($_SESSION["successMsg"])) { ?>
+    <div class="alert alert-success text-center mt-3 w-50 mx-auto" role="alert" id="msg-box">
+        <?= $_SESSION["successMsg"] ?>
+    </div>
+<?php unset($_SESSION["successMsg"]);
 }
+
 ?>
 
 
@@ -63,14 +64,14 @@ if (!isset($_SESSION["msgShown"])) {
 
     <h1 class="text-center">My Favourite Books</h1>
     <?php
-    if(count($userFavourites) == 0) {?>
-<h3 class="text-center mt-5"> You don't have any favourite book yet</h3>
-<?php }; ?>
-    
+    if (count($userFavourites) == 0) { ?>
+        <h3 class="text-center mt-5"> You don't have any favourite book yet</h3>
+    <?php }; ?>
 
 
 
-   
+
+
     <section class="user-booklist d-flex mt-3 flex-wrap justify-content-evenly">
 
         <?php
@@ -82,26 +83,26 @@ if (!isset($_SESSION["msgShown"])) {
                     <small>Year of publication: <?= $userBook["year"] ?></small>
                 </div>
                 <div class="buttons-book d-flex justify-content-end">
-                <div class="heart-container w-75 mx-auto d-flex justify-content-start ms-4 my-auto">
-                    <form action="controller.php" class="inner-heart" method="POST">
-                        <input type="hidden" name="book-fav-id" value=<?= $userBook["book_id"] ?>>
-                        <?php
-                        $isFavourite = false;
-                        if(in_array($userBook["book_id"], $favouriteBooksIndexes)){
-                            $isFavourite = true;
-                        }
-                        if ($isFavourite) { ?>
+                    <div class="heart-container w-75 mx-auto d-flex justify-content-start ms-4 my-auto">
+                        <form action="controller.php" class="inner-heart" method="POST">
+                            <input type="hidden" name="book-fav-id" value=<?= $userBook["book_id"] ?>>
+                            <?php
+                            $isFavourite = false;
+                            if (in_array($userBook["book_id"], $favouriteBooksIndexes)) {
+                                $isFavourite = true;
+                            }
+                            if ($isFavourite) { ?>
 
-                            <button class="bg-transparent border-0" type="submit" name="remove-favourite-fav">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#C6AE5B" class="bi bi-heart-fill" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314" />
-                                </svg>
-                            </button>
-                        <?php } ?>
-                          
-                    </form>
-                </div>
-            
+                                <button class="bg-transparent border-0" type="submit" name="remove-favourite-fav">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#C6AE5B" class="bi bi-heart-fill" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314" />
+                                    </svg>
+                                </button>
+                            <?php } ?>
+
+                        </form>
+                    </div>
+
                 </div>
 
             </article>
@@ -120,7 +121,7 @@ if (!isset($_SESSION["msgShown"])) {
                     </div>
                     <div class="mb-3">
                         <label for="book-author" class="form-label">Author</label>
-                        <input type="text" name="book-author" class="form-control" id="book-author" value="<?=$_SESSION['book-to-edit']['author'] ?>">
+                        <input type="text" name="book-author" class="form-control" id="book-author" value="<?= $_SESSION['book-to-edit']['author'] ?>">
                     </div>
                     <div class="mb-3">
                         <label for="year" class="form-label">Year of publication</label>
@@ -131,7 +132,7 @@ if (!isset($_SESSION["msgShown"])) {
                         <select name="genre" id="genre">
                             <?php foreach ($allGenres as $genre_id => $genre) { ?>
                                 <?php if ($_SESSION["book-to-edit"]["genre_id"] == $genre_id) { ?>
-                                    <option value="<?= $genre_id?>" selected><?= $genre ?></option>
+                                    <option value="<?= $genre_id ?>" selected><?= $genre ?></option>
                                 <?php } else { ?>
                                     <option value=<?= $genre_id ?>><?= $genre ?></option>
                                 <?php } ?>

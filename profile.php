@@ -39,18 +39,20 @@ $userBooks = getUserBooks($mysqli, $userID)
 <?php require_once("partials/header.php") ?>
 
 <?php
-if (!isset($_SESSION["msgShown"])) {
+
     if (isset($_SESSION["errorMsg"])) { ?>
         <div class="alert alert-danger text-center mt-3 w-50 mx-auto" role="alert" id="msg-box">
             <?= $_SESSION["errorMsg"] ?>
         </div>
-    <?php } elseif (isset($_SESSION["successMsg"])) { ?>
+    <?php unset($_SESSION["errorMsg"]);
+ } elseif (isset($_SESSION["successMsg"])) { ?>
         <div class="alert alert-success text-center mt-3 w-50 mx-auto" role="alert" id="msg-box">
             <?= $_SESSION["successMsg"] ?>
         </div>
-<?php }
-    $_SESSION["msgShown"] = true;
+<?php unset($_SESSION["successMsg"]);
 }
+
+
 ?>
 
 
@@ -125,7 +127,7 @@ if (!isset($_SESSION["msgShown"])) {
                     </div>
                     <div class="mb-3">
                         <label for="book-author" class="form-label">Author</label>
-                        <input type="text" name="book-author" class="form-control" id="book-author" value="<?=$_SESSION['book-to-edit']['author'] ?>">
+                        <input type="text" name="book-author" class="form-control" id="book-author" value="<?= $_SESSION['book-to-edit']['author'] ?>">
                     </div>
                     <div class="mb-3">
                         <label for="year" class="form-label">Year of publication</label>
@@ -136,7 +138,7 @@ if (!isset($_SESSION["msgShown"])) {
                         <select name="genre" id="genre">
                             <?php foreach ($allGenres as $genre_id => $genre) { ?>
                                 <?php if ($_SESSION["book-to-edit"]["genre_id"] == $genre_id) { ?>
-                                    <option value="<?= $genre_id?>" selected><?= $genre ?></option>
+                                    <option value="<?= $genre_id ?>" selected><?= $genre ?></option>
                                 <?php } else { ?>
                                     <option value=<?= $genre_id ?>><?= $genre ?></option>
                                 <?php } ?>
@@ -149,9 +151,6 @@ if (!isset($_SESSION["msgShown"])) {
                     <button type="submit" class="btn btn-info mt-4" name="exit-edit">Back</button>
 
                 </form>
-                <?php print_r($_SESSION["book-to-edit"]); ?>
-                <?php print_r($_SESSION["bookId"]) ?>
-
 
 
 

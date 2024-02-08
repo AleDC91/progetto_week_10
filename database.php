@@ -106,15 +106,77 @@ $row = $result->fetch_assoc();
 $countRowsInGenres = $row['count'];
 
 if ($countRowsInGenres == 0) {
-foreach ($genresList as $key => $value) {
-    $sql = "INSERT INTO genres (genre_id, genre) VALUES ($key, '" . $mysqli->real_escape_string($value) . "')";
-    if (!$mysqli->query($sql)) {
-        echo "Errore nell'inserimento dei dati nella tabella genres: " . $mysqli->error;
-    } else {
-        echo "Tabella genres riempita con successo";
+    foreach ($genresList as $key => $value) {
+        $sql = "INSERT INTO genres (genre_id, genre) VALUES ($key, '" . $mysqli->real_escape_string($value) . "')";
+        if (!$mysqli->query($sql)) {
+            echo "Errore nell'inserimento dei dati nella tabella genres: " . $mysqli->error;
+        } else {
+            echo "Tabella genres riempita con successo";
+        }
     }
 }
+
+
+
+// UTENTI FASULLI
+
+$checkUsers = "SELECT COUNT(*) as count FROM users";
+$result = $mysqli->query($checkUsers);
+$row = $result->fetch_assoc();
+$countRowsInUsers = $row['count'];
+
+$pswFakeUsers = password_hash("password", PASSWORD_DEFAULT);
+
+if ($countRowsInUsers == 0) {
+    $sqlFakeUsers = "INSERT INTO users (first_name, last_name, email, password, newsletter, image_url)
+     VALUES 
+     ('Katherine', 'Watkins', 'katherine.watkins@example.com', '$pswFakeUsers', 1, 'assets/images/avatar1.jpg'),
+     ('Joel', 'Brown', 'joel.brown@example.com', '$pswFakeUsers', 0, 'assets/images/avatar2.jpg'),
+     ('Camilla', 'Johansen', 'camilla.johansen@example.com', '$pswFakeUsers', 0, 'assets/images/avatar3.jpg'),
+     ('Carey', 'Morton', 'carey.morton@example.com', '$pswFakeUsers', 1, 'assets/images/avatar4.jpg')
+     ";
+    if (!$mysqli->query($sqlFakeUsers)) {
+        echo "Errore nell'inserimento dei dati nella tabella users: " . $mysqli->error;
+    } else {
+        echo "Tabella users riempita con successo";
+    }
 }
+
+
+
+// LIBRI UTENTI FASULLI
+
+$checkBooks = "SELECT COUNT(*) as count FROM books";
+$result = $mysqli->query($checkBooks);
+$row = $result->fetch_assoc();
+$countRowsInBooks = $row['count'];
+
+
+if ($countRowsInBooks == 0) {
+    $sqlDefaultBooks = "INSERT INTO books (title, author, year, genre_id, added_by)
+     VALUES 
+     ('I pilastri della terra', 'Ken Follet', 1989, 9, 1),
+     ('Il mercante di lana', 'Valeria Montaldi', 2006, 9, 3),
+     ('L\'incendiaria', 'Stephen King', 1980, 8, 2),
+     ('Orgoglio e Pregiudizio', 'Jane Austen', 1813, 7, 2),
+     ('1984', 'George Orwell', 1949, 5, 1),
+     ('Cent\'anni di solitudine', 'Gabriel García Márquez ', 1967, 9, 1),
+     ('Il Codice Da Vinci', 'Dan Brown ', 2003, 3, 4),
+     ('Il Grande Gatsby', 'F. Scott Fitzgerald', 1925, 1, 4),
+     ('Piccole Donne', 'Louisa May Alcott', 1868, 1, 2),
+     ('IT', 'Stephen King', 1986, 8, 3),
+     ('Harry Potter e la Pietra Filosofale', 'J.K. Rowling', 1997, 5, 1),
+     ('Il nome del vento', 'Patrick Rothfuss', 2007, 6, 3)
+     ";
+
+    if (!$mysqli->query($sqlDefaultBooks)) {
+        echo "Errore nell'inserimento dei dati nella tabella users: " . $mysqli->error;
+    } else {
+        echo "Tabella users riempita con successo";
+    }
+}
+
+
 
 // ESTRAZIONE ARRAY UTILI
 

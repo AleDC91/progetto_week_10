@@ -8,7 +8,7 @@ body{
 }
 
 .main-container{
-    margin-top: 200px;
+    margin-top: 140px;
 }
 .nav-items-left{
     align-items: center;
@@ -36,7 +36,7 @@ body{
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     font-style: italic;
     background-image: url("/assets/images/book_cover.png");
-    background-size: cover;
+    background-size: contain;
     width: 350px;
     aspect-ratio: 0.844;
     padding-left: 4%;
@@ -61,7 +61,7 @@ padding-bottom: 20px;
 
 #msg-box{
     position: absolute;
-    top: 100px;
+    top: 60px;
     left:  calc(100vw - 75%);
 }
 
@@ -106,4 +106,28 @@ form input:not([type="file"])
 {
 
     border: 1px solid black !important;
+}
+
+.add-form{
+    width: 50%;
+    margin-top: 32px;
+}
+
+@media screen and (max-width: 576px) {
+    .add-form{
+        width: 100%;
+    }
+    .single-book{
+        width: 300px;
+        max-height: 400px;
+    }
+}
+@media screen and (max-width: 400px) {
+    .add-form{
+        width: 100%;
+    }
+    .single-book{
+        padding-top: 30px;
+        max-height: 400px;
+    }
 }

@@ -9,38 +9,41 @@
 
 <?php require_once('partials/header.php'); ?>
 
-    <?php
-    $isLogged = false;
+<?php
+$isLogged = false;
 
-    session_start();
-    if (isset($_SESSION["isLogged"])) {
-        $isLogged = true;
-        header("Location: http://localhost/index.php");
-    }
+session_start();
+if (isset($_SESSION["isLogged"])) {
+    $isLogged = true;
+    header("Location: http://localhost/index.php");
+}
 
-    if (!isset($_SESSION["msgShown"])) {
-        if (isset($_SESSION["errorMsg"])) { ?>
-            <div class="alert alert-danger text-center mt-3 w-50 mx-auto" role="alert" id="msg-box">
-                <?= $_SESSION["errorMsg"] ?>
-            </div>
-    <?php }
-        $_SESSION["msgShown"] = true;
-    }
-    ?>
-    <h1 class="text-center">Login</h1>
 
-    <form action="controller.php" method="POST" class="mt-5 w-50 mx-auto text-center">
+if (isset($_SESSION["errorMsg"])) { ?>
+    <div class="alert alert-danger text-center mt-3 w-50 mx-auto" role="alert" id="msg-box">
+        <?= $_SESSION["errorMsg"] ?>
+    </div>
+<?php
+    unset($_SESSION["errorMsg"]);
+}
 
-        <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" name="email" class="form-control" id="email">
-        </div>
-        <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
-            <input type="password" name="password" class="form-control" id="password">
-        </div>
-        <button class="btn btn-success" type="submit" name="login">Login</button>
-    </form>
+session_write_close();
+?>
+
+<h1 class="text-center">Login</h1>
+
+<form action="controller.php" method="POST" class="mt-5 w-50 mx-auto text-center">
+
+    <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" name="email" class="form-control" id="email">
+    </div>
+    <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" name="password" class="form-control" id="password">
+    </div>
+    <button class="btn btn-success" type="submit" name="login">Login</button>
+</form>
 
 
 

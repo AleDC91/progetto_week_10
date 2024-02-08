@@ -7,14 +7,15 @@
     <?php
 
     session_start();
-    if (!isset($_SESSION["msgShown"])) {
+
         if (isset($_SESSION["errorMsg"])) { ?>
             <div class="alert alert-danger text-center mt-3 w-50 mx-auto" role="alert" id="msg-box">
                 <?= $_SESSION["errorMsg"] ?>
             </div>
-    <?php }
-        $_SESSION["msgShown"] = true;
+    <?php unset($_SESSION["errorMsg"]);
     }
+      
+    
     session_write_close()
     ?>
 

@@ -19,24 +19,71 @@ if (!isset($_SESSION["isLogged"])) {
 <?php require_once("partials/header.php") ?>
 
 <?php
-if (!isset($_SESSION["msgShown"])) {
-    if (isset($_SESSION["successMsg"])) { ?>
-        <div class="alert alert-success text-center mt-3 w-50 mx-auto" role="alert" id="msg-box">
-            <?= $_SESSION["successMsg"] ?>
-        </div>
-<?php }
-    unset($_SESSION["msgShown"]);
-}
+
+if (isset($_SESSION["successMsg"])) { ?>
+    <div class="alert alert-success text-center mt-3 w-50 mx-auto" role="alert" id="msg-box">
+        <?= $_SESSION["successMsg"] ?>
+    </div>
+
+<?php unset($_SESSION["successMsg"]);
+} elseif (isset($_SESSION["errorMsg"])) { ?>
+    <div class="alert alert-danger text-center mt-3 w-50 mx-auto" role="alert" id="msg-box">
+        <?= $_SESSION["errorMsg"] ?>
+    </div>
+<?php 
+unset($_SESSION["errorMsg"]);
+} 
+
 
 $userFavourites = getUserFavourites($mysqli, $_SESSION["userID"]);
 $favouriteBooksIndexes = [];
 foreach ($userFavourites as $favouriteBook) {
-    $favouriteBooksIndexes[] = $favouriteBook["book_id"];
+$favouriteBooksIndexes[] = $favouriteBook["book_id"];
 }
 ?>
+
+<?php
+if (isset($_SESSION["query"])) {
+    $searchResult = [];
+
+    $search = $_SESSION["query"];
+    $search = $mysqli->real_escape_string($search);
+    $query = "SELECT * FROM books 
+              JOIN genres ON books.genre_id = genres.genre_id 
+              JOIN users ON books.added_by = users.id 
+              WHERE author LIKE '%$search%' OR title LIKE '%$search%'";
+
+
+    $result = $mysqli->query($query);
+
+    if ($result) {
+        while ($row = $result->fetch_assoc()) {
+            $searchResult[] = $row;
+        }
+    } else {
+        echo "Errore nella query: " . $mysqli->error;
+    }
+    $allBooks = $searchResult;
+    unset($_SESSION["query"]);
+}
+?>
+
+
+
+
 <h1 class="text-center my-5">All books</h1>
 
-<section class="books-container container d-flex flex-wrap justify-content-evenly">
+
+<form class="text-center mb-4" action="controller.php" method="POST">
+    <input class="p-1 px-3" type="text" placeholder="Search for book or author..." name="query">
+    <button class="btn btn-dark" type="submit">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+        </svg>
+    </button>
+</form>
+
+<section class="books-container d-flex flex-wrap justify-content-evenly">
 
     <?php foreach ($allBooks as $book) { ?>
         <article class="single-book m-3 d-flex flex-column justify-content-between">
@@ -51,14 +98,14 @@ foreach ($userFavourites as $favouriteBook) {
                 <p><?= $book["genre"] ?></p>
                 <div class="d-flex align-items-center justify-content-center">
                     <p class="m-0 p-0 pe-3">Added by: </p>
-                    <img class="rounded-circle" src=<?= isset($book["image_url"]) ?  $book["image_url"] : "/assets/images/avatar-1577909_960_720.webp" ?> width="35" height="35">
+                    <a href="userInfo.php?user=<?= $book["id"] ?>"><img class="rounded-circle" src=<?= isset($book["image_url"]) ?  $book["image_url"] : "/assets/images/avatar-1577909_960_720.webp" ?> width="35" height="35"></a>
                 </div>
                 <div class="heart-container w-75 mx-auto d-flex justify-content-start">
                     <form action="controller.php" class="inner-heart" method="POST">
                         <input type="hidden" name="book-fav-id" value=<?= $book["book_id"] ?>>
                         <?php
                         $isFavourite = false;
-                        if(in_array($book["book_id"], $favouriteBooksIndexes)){
+                        if (in_array($book["book_id"], $favouriteBooksIndexes)) {
                             $isFavourite = true;
                         }
                         if ($isFavourite) { ?>

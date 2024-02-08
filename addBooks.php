@@ -10,24 +10,25 @@
 
 <?php require_once("partials/header.php") ?>
 <?php
-if (!isset($_SESSION["msgShown"])) {
+
     if (isset($_SESSION["errorMsg"])) { ?>
         <div class="alert alert-danger text-center mt-3 w-50 mx-auto" role="alert" id="msg-box">
             <?= $_SESSION["errorMsg"] ?>
         </div>
-    <?php }
+    <?php unset($_SESSION["errorMsg"]);
+    }
     elseif (isset($_SESSION["successMsg"])) { ?>
         <div class="alert alert-success text-center mt-3 w-50 mx-auto" role="alert" id="msg-box">
             <?= $_SESSION["successMsg"] ?>
         </div>
-<?php }
-    $_SESSION["msgShown"] = true;
+<?php unset($_SESSION["successMsg"]);
 }
+
 ?>
 
     <h1 class="text-center">Add a Book to the Library</h1>
 
-    <form action="controller.php" method="POST" class="mt-5">
+    <form class="add-form mx-auto" action="controller.php" method="POST">
         <div class="mb-3">
             <label for="book-title" class="form-label">Book Title</label>
             <input type="text" name="book-title" class="form-control" id="book-title">
