@@ -47,7 +47,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                                 <hr class="dropdown-divider">
                             </li>
                             <li>
-                                <form action="controller.php" method="post" class="text-center">
+                                <form action="controller.php" method="POST" class="text-center">
                                     <button class="btn btn-dark" name="logout">Logout</button>
                                 </form>
                             </li>
@@ -57,7 +57,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                     <?php
 
                     if ($isLogged) { ?>
-                        <form action="controller.php" method="post" class="mx-2 my-auto">
+                        <form action="controller.php" method="POST" class="mx-2 my-auto">
                             <button class="btn btn-dark" name="logout">Logout</button>
                         </form>
                     <?php } ?>

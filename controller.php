@@ -1,3 +1,32 @@
+
+<!-- 
+Inserire i parametri per la connessione al DB nel file config.php.
+
+Si possono personalizzare i parametri di mailtrap nel file mail.php.
+
+L'appllicazione permette di registrarsi e fare il login. Una volta registrati, 
+manda un'email di benvenuto al nuovo utente. Il database viene popolato al primo avvio 
+con 4 utenti fake e qualche libro. Ogni utente, dalla sezione profilo, ha la possibilità 
+di modificare o eliminare dal database solamente i libri da lui inseriti. Nella sezione allBooks 
+sono visibili tutti i libri caricati dagli utenti. Cliccando sull'avatar nel libro si accede ad 
+una semplice pagina di dettaglio dell'utente che ha aggiunto quel libro. I libri nella sezione 
+principale possono essere filtrati, indifferentemente per autore o titolo. 
+Cliccando sull'icona del cuore in copertina, si può aggiungere (o rimuovere) un libro alla lista
+dei preferiti. Tutti i dati inseriti dall'utente sono controllati lato server, e vengono visualizzati 
+messaggi di errore o di successo a seconda dell'esito delle operazioni effettuate.
+
+In questo esercizio ho sperimentato divesi modi per interagire con il database. 
+Sempre son mysqli, qualche richiesta è stata fatta usando anche i prepared statements.
+Con le tabelle 'genres' e 'favourites' ho usato le relazioni uno a molti e molti a molti.
+
+  
+ -->
+
+
+
+
+
+
 <?php
 require 'vendor/autoload.php';
 require_once("database.php");
@@ -12,12 +41,15 @@ require_once('mail.php');
 session_start();
 
 
-unset($_SESSION["errorMsg"]);
-unset($_SESSION["successMsg"]);
 unset($_SESSION["book-to-edit"]);
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+
+    unset($_SESSION["errorMsg"]);
+    unset($_SESSION["successMsg"]);
+
 
     if (isset($_POST["register-form"])) {
 
@@ -91,6 +123,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (isset($_POST['logout'])) {
         session_unset();
+
         header("Location: http://localhost/login.php");
         exit();
     }
@@ -200,15 +233,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $BOOKID = filter_var(filter_var($_POST["book-id"], FILTER_SANITIZE_NUMBER_INT), FILTER_VALIDATE_INT);
 
 
-
-        // $userID = $_SESSION["userID"];
-        // $newTitle = $_POST["book-title"];
-        // $newAuthor = $_POST["book-author"];
-        // $newYear = (int)$_POST["year"];
-        // $newGenre = (int)$_POST["genre"];
-        // $BOOKID = (int)$_POST["book-id"];
-
-
         if (!is_string($newTitle) || strlen($newTitle) < 1) {
             $_SESSION["errorMsg"] = "Inserisci il titolo del libro!";
             header("Location: http://localhost/profile.php");
@@ -238,10 +262,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
-    if(isset($_POST["add-favourite"])) {
+    if (isset($_POST["add-favourite"])) {
         $userId = $_SESSION["userID"];
         $bookId = filter_var(filter_var($_POST["book-fav-id"], FILTER_SANITIZE_NUMBER_INT), FILTER_VALIDATE_INT);
-        addFavourite($mysqli, $bookId,$userId);
+        addFavourite($mysqli, $bookId, $userId);
         header("Location: http://localhost/index.php");
         exit();
     }
@@ -260,8 +284,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $userId = $_SESSION["userID"];
         $bookId = filter_var(filter_var($_POST["book-fav-id"], FILTER_SANITIZE_NUMBER_INT), FILTER_VALIDATE_INT);
         removeFavourites($mysqli, $bookId, $userId);
-        unset($_SESSION["msgShown"]);
-
         header("Location: http://localhost/favourites.php");
         exit();
     }
@@ -273,6 +295,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header("Location: http://localhost/index.php");
         exit();
     }
-
-
 }

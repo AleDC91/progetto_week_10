@@ -23,11 +23,11 @@ if ($resDbUserData) {
 } else {
     echo "Errore nell'esecuzione della query: " . $mysqli->error;
 }
+session_write_close();
 ?>
 
 
 <?php
-
 $userBooks = getUserBooks($mysqli, $userID);
 
 $userFavourites = getUserFavourites($mysqli, $userID);
@@ -43,6 +43,7 @@ foreach ($userFavourites as $favouriteBook) {
 <?php require_once("partials/header.php") ?>
 
 <?php
+session_start();
 
 if (isset($_SESSION["errorMsg"])) { ?>
     <div class="alert alert-danger text-center mt-3 w-50 mx-auto" role="alert" id="msg-box">
@@ -54,6 +55,7 @@ if (isset($_SESSION["errorMsg"])) { ?>
         <?= $_SESSION["successMsg"] ?>
     </div>
 <?php unset($_SESSION["successMsg"]);
+    session_write_close();
 }
 
 ?>

@@ -1,133 +1,139 @@
-body{
-    height: 100vh;
-    background-image: url(/assets/images/library_bg.png);
-    background-size: cover; 
-    background-position: center;; 
-    background-attachment: fixed;
-    background-repeat: no-repeat; 
+body {
+  height: 100vh;
+  background-image: url(/assets/images/library_bg.png);
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
 }
 
-.main-container{
-    margin-top: 140px;
+.main-container {
+  margin-top: 180px;
 }
-.nav-items-left{
-    align-items: center;
+.nav-items-left {
+  align-items: center;
 }
 
 @media screen and (max-width: 992px) {
-    .saluto{
-        order: -100;
-       padding: 20px 0 10px 0 !important;
-    }
-    .nav-items-left{
-        align-items: start;
-    }
-
+  .saluto {
+    order: -100;
+    padding: 20px 0 10px 0 !important;
+  }
+  .nav-items-left {
+    align-items: start;
+  }
 }
 
-.user-info-avatar{
-    width: 200px;
-    height: 200px;
+.user-info-avatar {
+  width: 200px;
+  height: 200px;
 }
 
-
-
-.user-book, .single-book{
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-    font-style: italic;
-    background-image: url("/assets/images/book_cover.png");
-    background-size: contain;
-    width: 350px;
-    aspect-ratio: 0.844;
-    padding-left: 4%;
-    padding-top: 60px ;
-    text-align:  center;
-    color: #c19f41 ;
-    box-shadow: 8px 8px 8px rgb(87, 87, 87);
-    border-radius: 10px;
+.user-book,
+.single-book {
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+  font-style: italic;
+  background-image: url("/assets/images/book_cover.png");
+  background-size: contain;
+  width: 350px;
+  aspect-ratio: 0.844;
+  padding-left: 4%;
+  padding-top: 60px;
+  text-align: center;
+  color: #c19f41;
+  box-shadow: 8px 8px 8px rgb(87, 87, 87);
+  border-radius: 10px;
 }
 
-.user-book h4, .single-book h4, .user-book h5, .single-book h5{
-padding-bottom: 20px;
+.user-book h4,
+.single-book h4,
+.user-book h5,
+.single-book h5 {
+  padding-bottom: 20px;
 }
-.book-body{
-    flex-grow: 1;
-}
-
-.buttons-book{
-    margin: 8% 8% 14% 0;
-
+.book-body {
+  flex-grow: 1;
 }
 
-#msg-box{
-    position: absolute;
-    top: 60px;
-    left:  calc(100vw - 75%);
+.buttons-book {
+  margin: 8% 8% 14% 0;
 }
 
-.btn-delete{
-    background-color: #B7A568;
-    color: #41262B;
-    border: 1px solid #B7A568;
-}
-.btn-delete:hover{
-    border: 1px solid #B7A568;
+#msg-box {
+  position: absolute;
+  top: 90px;
+  left: calc(100vw - 75%);
 }
 
-.btn-edit{
-    background-color: #41262B;
-    color: #B7A568;
-    border: 1px solid  #B7A568
+.btn-delete {
+  background-color: #b7a568;
+  color: #41262b;
+  border: 1px solid #b7a568;
 }
-.btn-edit:hover{
-    border: 1px solid #B7A568;
-    background-color: #B7A568;
-    color: #41262B;;
+.btn-delete:hover {
+  border: 1px solid #b7a568;
 }
 
-.edit-box{
-    position: fixed;
-    top: 150px; 
-    right:0;
-    width: 100%;
-    margin: 0 auto;
-
+.btn-edit {
+  background-color: #41262b;
+  color: #b7a568;
+  border: 1px solid #b7a568;
+}
+.btn-edit:hover {
+  border: 1px solid #b7a568;
+  background-color: #b7a568;
+  color: #41262b;
 }
 
-.inner-edit{
-    max-width: 500px;
-    margin: 0 auto;
-    background-color: #866c71;
-
-    padding: 50px;
+.edit-box {
+  position: absolute;
+  top: 150px;
+  right: 0;
+  width: 100%;
+  margin: 0 auto;
+  height: 480px;
 }
 
-form input:not([type="file"])
-{
+.inner-edit {
+  max-width: 500px;
+  margin: 0 auto;
+  background-color: #866c71;
+  height: 580px;
 
-    border: 1px solid black !important;
+  overflow: auto;
+  padding: 50px;
 }
 
-.add-form{
-    width: 50%;
-    margin-top: 32px;
+form input:not([type="file"]) {
+  border: 1px solid black !important;
+}
+
+.add-form {
+  width: 50%;
+  margin-top: 32px;
 }
 
 @media screen and (max-width: 576px) {
-    .add-form{
-        width: 100%;
-    }
-    .single-book{
-        width: 300px;
-        max-height: 400px;
-    }
+  .add-form {
+    width: 100%;
+  }
+  .single-book {
+    width: 300px;
+    max-height: 400px;
+  }
 }
 @media screen and (max-width: 400px) {
-    .add-form{
-        width: 100%;
-    }
-    .single-book{
-        padding-top: 30px;
-        max-height: 400px;
-    }
+  .add-form {
+    width: 100%;
+  }
+  .single-book {
+    padding-top: 30px;
+    max-height: 400px;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .heart-container button {
+    padding-left: 35px;
+  }
 }

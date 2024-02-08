@@ -8,20 +8,20 @@
 
     session_start();
 
-        if (isset($_SESSION["errorMsg"])) { ?>
-            <div class="alert alert-danger text-center mt-3 w-50 mx-auto" role="alert" id="msg-box">
-                <?= $_SESSION["errorMsg"] ?>
-            </div>
+    if (isset($_SESSION["errorMsg"])) { ?>
+        <div class="alert alert-danger text-center mt-3 w-50 mx-auto" role="alert" id="msg-box">
+            <?= $_SESSION["errorMsg"] ?>
+        </div>
     <?php unset($_SESSION["errorMsg"]);
     }
-      
-    
+
+
     session_write_close()
     ?>
 
+    
 
-
-    <form action="controller.php" method="POST" enctype="multipart/form-data" class="mt-5">
+    <form action="controller.php" method="POST" enctype="multipart/form-data" class="mt-5" >
         <div class="mb-3">
             <label for="firstName" class="form-label">First Name</label>
             <input type="text" name="firstName" class="form-control" id="firstName">
@@ -46,12 +46,25 @@
             <input type="checkbox" name="newsletter" class="form-check-input" id="newsletter">
             <label class="form-check-label" for="newsletter">Iscriviti alla newsletter!</label>
         </div>
-        <button type="submit" class="btn btn-primary mt-4" name="register-form">Register!</button>
+
+        <button type="submit" class="btn btn-primary mt-4" name="register-form" id="registerButton">
+            <span class="loading-text">Register!</span>
+        </button>
     </form>
 
 </main>
 
 
+<?php require_once("partials/footer.php") ?>
+
+<!-- <script>
+    document.querySelector('#registerButton').addEventListener('click', () => {
+        
+        document.querySelector('#registerButton').setAttribute('disabled', 'true');
+        document.querySelector('form').submit();
+
+    })
+    </script> -->
 
 <script>
     const msgBox = document.getElementById("msg-box");
@@ -61,4 +74,3 @@
         }, 3000);
     }
 </script>
-<?php require_once("partials/footer.php") ?>

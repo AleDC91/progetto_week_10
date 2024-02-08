@@ -10,19 +10,28 @@
 
 <?php require_once("partials/header.php") ?>
 <?php
-
-    if (isset($_SESSION["errorMsg"])) { ?>
+    session_start();
+    if (isset($_SESSION["errorMsg"])) { 
+        session_write_close();
+        ?>
         <div class="alert alert-danger text-center mt-3 w-50 mx-auto" role="alert" id="msg-box">
             <?= $_SESSION["errorMsg"] ?>
         </div>
-    <?php unset($_SESSION["errorMsg"]);
+    <?php
+    session_start();
+    unset($_SESSION["errorMsg"]);
+    session_write_close();
     }
     elseif (isset($_SESSION["successMsg"])) { ?>
         <div class="alert alert-success text-center mt-3 w-50 mx-auto" role="alert" id="msg-box">
             <?= $_SESSION["successMsg"] ?>
         </div>
-<?php unset($_SESSION["successMsg"]);
+<?php 
+session_start();
+unset($_SESSION["successMsg"]);
+session_write_close();
 }
+
 
 ?>
 

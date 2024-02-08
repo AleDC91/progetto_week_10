@@ -11,6 +11,7 @@ if (!isset($_SESSION["isLogged"])) {
     $isLogged = true;
     header("Location: http://localhost/login.php");
 }
+session_write_close();
 ?>
 
 <?php require_once('database.php'); ?>
@@ -19,21 +20,27 @@ if (!isset($_SESSION["isLogged"])) {
 <?php require_once("partials/header.php") ?>
 
 <?php
-
-if (isset($_SESSION["successMsg"])) { ?>
+session_start();
+if (isset($_SESSION["successMsg"])  && !empty($_SESSION["successMsg"])) { ?>
     <div class="alert alert-success text-center mt-3 w-50 mx-auto" role="alert" id="msg-box">
-        <?= $_SESSION["successMsg"] ?>
+        <?= $_SESSION["successMsg"];
+        unset($_SESSION["successMsg"]); 
+        session_write_close();
+        ?>
     </div>
 
-<?php unset($_SESSION["successMsg"]);
+<?php 
+session_start();
+
 } elseif (isset($_SESSION["errorMsg"])) { ?>
     <div class="alert alert-danger text-center mt-3 w-50 mx-auto" role="alert" id="msg-box">
-        <?= $_SESSION["errorMsg"] ?>
+       
+        <?= $_SESSION["errorMsg"];
+         unset($_SESSION["errorMsg"]); 
+         session_write_close();?>
     </div>
-<?php 
-unset($_SESSION["errorMsg"]);
+    <?php 
 } 
-
 
 $userFavourites = getUserFavourites($mysqli, $_SESSION["userID"]);
 $favouriteBooksIndexes = [];
@@ -72,6 +79,7 @@ if (isset($_SESSION["query"])) {
 
 
 <h1 class="text-center my-5">All books</h1>
+
 
 
 <form class="text-center mb-4" action="controller.php" method="POST">
