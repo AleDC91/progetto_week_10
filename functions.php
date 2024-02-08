@@ -149,9 +149,60 @@ function editBook($mysqli, $newTitle, $newAuthor, $newYear, $newGenre, $bookId){
         header("Location: http://localhost/profile.php");
         exit();
     }
+}
 
 
-
+function addFavourite($mysqli, $bookId, $userId){
+    $sqlAddFav = "INSERT INTO favourites (user_id, book_id) VALUES (?, ?)";
+    $stmt = $mysqli->prepare($sqlAddFav);
+    if ($stmt) {
+        $stmt->bind_param("ii", $userId, $bookId);
+        $result = $stmt->execute();
+        if ($result) {
+            $_SESSION["successMsg"] = "Libro aggiunto ai preferiti";
+        } else {
+            $_SESSION["errorMsg"] = "Errore. Libro non aggiunto tra i preferiti: " . $mysqli->error;
+        }
+        $stmt->close();
+    } else {
+        $_SESSION["errorMsg"] = "Errore nella preparazione della query: " . $mysqli->error;
+    }
 
 }
+
+
+
+function removeFavourites($mysqli, $bookId, $userId){
+
+ $sqlDelFav = "DELETE FROM favourites WHERE user_id=? AND book_id=?";
+ $stmt = $mysqli->prepare($sqlDelFav);
+ if ($stmt) {
+     $stmt->bind_param("ii", $userId, $bookId);
+     $result = $stmt->execute();
+     if ($result) {
+         $_SESSION["successMsg"] = "Libro rimosso dai preferiti";
+     } else {
+         $_SESSION["errorMsg"] = "Errore. Libro non rimosso dai preferiti: " . $mysqli->error;
+     }
+     $stmt->close();
+ } else {
+     $_SESSION["errorMsg"] = "Errore nella preparazione della query: " . $mysqli->error;
+ }
+}
+
+
+function getUserFavourites($mysqli, $userId){
+    $sqlUserFav = "SELECT * FROM books JOIN favourites ON books.book_id = favourites.book_id WHERE user_id = $userId ";
+    $resUserFav = $mysqli->query($sqlUserFav);
+    if ($resUserFav) {
+        $userFavs = [];
+        while ($row = $resUserFav->fetch_assoc()) {
+            $userFavs[] = $row;
+        }
+        return $userFavs;
+    } else {
+        echo "Errore nell'esecuzione della query: " . $mysqli->error;
+    }
+}
+
 ?>

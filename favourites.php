@@ -28,9 +28,13 @@ if ($resDbUserData) {
 
 <?php
 
-$userBooks = getUserBooks($mysqli, $userID)
+$userBooks = getUserBooks($mysqli, $userID);
 
-
+$userFavourites = getUserFavourites($mysqli, $userID);
+$favouriteBooksIndexes = [];
+foreach ($userFavourites as $favouriteBook){
+    $favouriteBooksIndexes[] = $favouriteBook["book_id"];
+}
 
 ?>
 
@@ -57,31 +61,20 @@ if (!isset($_SESSION["msgShown"])) {
 
 <main class="container my-5">
 
-    <h1 class="text-center">My Profile</h1>
-
+    <h1 class="text-center">My Favourite Books</h1>
     <?php
-    // print_r($userBooks);
-    // print_r($allUserBooks);
-    // print_r($_SESSION["userID"]);
+    if(count($userFavourites) == 0) {?>
+<h3 class="text-center mt-5"> You don't have any favourite book yet</h3>
+<?php }; ?>
+    
 
-    ?>
-    <section class="user-info d-flex flex-column flex-lg-row my-5 align-items-center justify-content-center">
-        <div class="user-info-avatar mx-5 my-4 my-lg-0">
-            <img class="img-fluid rounded-circle w-100 h-100" src=<?= isset($dbUserData["image_url"]) ? $dbUserData["image_url"] : "assets/images/avatar-1577909_960_720.webp"  ?> alt="avatar">
-        </div>
-        <div class="user-info-data">
-            <h4>First Name: <?= $dbUserData["first_name"] ?></h4>
-            <h4>Last Name: <?= $dbUserData["last_name"] ?></h4>
-            <h4>Email: <?= $dbUserData["email"] ?></h4>
-            <h4>Added books: <?= count($userBooks); ?></h4>
-        </div>
-    </section>
 
-    <h2 class="text-center pt-5">My books</h2>
+
+   
     <section class="user-booklist d-flex mt-3 flex-wrap justify-content-evenly">
 
         <?php
-        foreach ($userBooks as $userBook) { ?>
+        foreach ($userFavourites as $userBook) { ?>
             <article class="user-book m-4 d-flex flex-column justify-content-between">
                 <div class="book-body d-flex flex-column justify-content-between px-5">
                     <h4><?= $userBook["author"]  ?></h4>
@@ -89,26 +82,28 @@ if (!isset($_SESSION["msgShown"])) {
                     <small>Year of publication: <?= $userBook["year"] ?></small>
                 </div>
                 <div class="buttons-book d-flex justify-content-end">
+                <div class="heart-container w-75 mx-auto d-flex justify-content-start ms-4 my-auto">
+                    <form action="controller.php" class="inner-heart" method="POST">
+                        <input type="hidden" name="book-fav-id" value=<?= $userBook["book_id"] ?>>
+                        <?php
+                        $isFavourite = false;
+                        if(in_array($userBook["book_id"], $favouriteBooksIndexes)){
+                            $isFavourite = true;
+                        }
+                        if ($isFavourite) { ?>
 
-                    <form action="controller.php" method="POST">
-                        <input type="hidden" name="book-id" value=<?= $userBook["book_id"]  ?>>
-
-                        <button type="submit" class="btn btn-edit" name="open-edit-book">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
-                                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325" />
-                            </svg>
-                        </button>
-                    </form>
-                    <form action="controller.php" method="POST" class="mx-3">
-                        <input type="hidden" name="book-id" value=<?= $userBook["book_id"]  ?>>
-                        <button type="submit" class="btn btn-delete" name="delete-book">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
-                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
-                            </svg>
-                        </button>
+                            <button class="bg-transparent border-0" type="submit" name="remove-favourite-fav">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#C6AE5B" class="bi bi-heart-fill" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314" />
+                                </svg>
+                            </button>
+                        <?php } ?>
+                          
                     </form>
                 </div>
+            
+                </div>
+
             </article>
         <?php } ?>
     </section>

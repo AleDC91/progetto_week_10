@@ -85,6 +85,9 @@ $sqlFavouritesTable = "CREATE TABLE IF NOT EXISTS favourites (
     `book_id` INT,
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (book_id) REFERENCES books(book_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+
     )";
 
 if (!$mysqli->query($sqlFavouritesTable)) {

@@ -184,7 +184,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $bookId = filter_var(filter_var($_POST["book-id"], FILTER_SANITIZE_NUMBER_INT), FILTER_VALIDATE_INT);
         $_SESSION["bookId"] = $bookId;
         $_SESSION["book-to-edit"] = getUserBook($mysqli, $_SESSION["userID"], $_SESSION["bookId"]);
-
+        print_r($_SESSION["book-to-edit"]);
         header("Location: http://localhost/profile.php");
         exit();
     }
@@ -237,4 +237,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header("Location: http://localhost/profile.php");
         exit();
     }
+
+    if(isset($_POST["add-favourite"])) {
+        $userId = $_SESSION["userID"];
+        $bookId = filter_var(filter_var($_POST["book-fav-id"], FILTER_SANITIZE_NUMBER_INT), FILTER_VALIDATE_INT);
+        addFavourite($mysqli, $bookId,$userId);
+        header("Location: http://localhost/index.php");
+        exit();
+    }
+
+
+    if (isset($_POST["remove-favourite"])) {
+        $userId = $_SESSION["userID"];
+        $bookId = filter_var(filter_var($_POST["book-fav-id"], FILTER_SANITIZE_NUMBER_INT), FILTER_VALIDATE_INT);
+        removeFavourites($mysqli, $bookId, $userId);
+        header("Location: http://localhost/index.php");
+        exit();
+    }
+
+
+    if (isset($_POST["remove-favourite-fav"])) {
+        $userId = $_SESSION["userID"];
+        $bookId = filter_var(filter_var($_POST["book-fav-id"], FILTER_SANITIZE_NUMBER_INT), FILTER_VALIDATE_INT);
+        removeFavourites($mysqli, $bookId, $userId);
+        header("Location: http://localhost/favourites.php");
+        exit();
+    }
+
+
+
 }

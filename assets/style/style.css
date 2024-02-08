@@ -40,13 +40,16 @@ body{
     width: 350px;
     aspect-ratio: 0.844;
     padding-left: 4%;
-    padding-top: 8% ;
+    padding-top: 60px ;
     text-align:  center;
     color: #c19f41 ;
     box-shadow: 8px 8px 8px rgb(87, 87, 87);
     border-radius: 10px;
 }
 
+.user-book h4, .single-book h4, .user-book h5, .single-book h5{
+padding-bottom: 20px;
+}
 .book-body{
     flex-grow: 1;
 }
@@ -97,4 +100,10 @@ body{
     background-color: #866c71;
 
     padding: 50px;
+}
+
+form input:not([type="file"])
+{
+
+    border: 1px solid black !important;
 }

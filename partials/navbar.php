@@ -12,7 +12,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav w-100 justify-content-between">
+            <ul class="navbar-nav w-100 <?php if($isLogged){ ?>justify-content-between<?php } else { ?>justify-content-end<?php } ?>">
                 <div class=" nav-items-left d-flex flex-column flex-lg-row ">
 
                     <?php
@@ -25,7 +25,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                             <a class="nav-link" href="addBooks.php">Add Books</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">My Favourites</a>
+                            <a class="nav-link" href="favourites.php">My Favourites</a>
                         </li>
                         <p class="p-0 m-0 ms-lg-5 saluto">
                             <?php echo "Hi, " . $_SESSION["userName"] . "!" ?>
@@ -42,7 +42,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                             <li><a class="dropdown-item" href="profile.php">My Profile</a></li>
                             <li><a class="dropdown-item" href="index.php">Books</a></li>
                             <li><a class="dropdown-item" href="addBooks.php">Add Books</a></li>
-                            <li><a class="dropdown-item" href="#">My Favourites</a></li>
+                            <li><a class="dropdown-item" href="favourites.php">My Favourites</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
@@ -57,17 +57,17 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                     <?php
 
                     if ($isLogged) { ?>
-                        <form action="controller.php" method="post" class="mx-2">
+                        <form action="controller.php" method="post" class="mx-2 my-auto">
                             <button class="btn btn-dark" name="logout">Logout</button>
                         </form>
                     <?php } ?>
 
                     <?php if (!$isLogged && $currentPage == "login.php") { ?>
-                        <a href="register.php"> <button class="btn btn-dark">Register</button></a>
+                        <a href="register.php"> <button class="btn btn-dark my-auto">Register</button></a>
                     <?php } ?>
 
                     <?php if (!$isLogged && $currentPage != "login.php") { ?>
-                        <a href="login.php"> <button class="btn btn-dark">Login</button></a>
+                        <a href="login.php"> <button class="btn btn-dark my-auto">Login</button></a>
                     <?php } ?>
                 </div>
 
